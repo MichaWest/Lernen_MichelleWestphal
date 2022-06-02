@@ -1,16 +1,27 @@
 package commands;
 
+import collection.PersonCollection;
+import data.Person;
+
 import java.io.Serializable;
-import java.util.List;
 
 public abstract class Command implements Serializable {
-    protected String nameOfCommand = "";
-    protected History history;
+    protected String nameOfCommand;
+    protected HistoryCommand history;
+    protected PersonCollection collection;
 
-    public abstract void execute();
+    public Command(String name){
+        nameOfCommand = name;
+    }
 
     public String getNameOfCommand(){
         return nameOfCommand;
+    }
+
+    public abstract void getResult();
+
+    public PersonCollection getCollection(){
+        return collection;
     }
 
 }

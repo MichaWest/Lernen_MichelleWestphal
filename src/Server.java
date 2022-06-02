@@ -1,6 +1,9 @@
+import collection.PersonCollection;
 import commands.Command;
+import commands.CommandExecutorClient;
+import commands.CommandExecutorServer;
 import commands.HelpCommand;
-import commands.History;
+import fileManager.FileWorker;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -13,17 +16,21 @@ import java.nio.channels.DatagramChannel;
 public class Server {
 
     public static void main(String[] args) throws IOException, ClassNotFoundException {
-        DatagramChannel channel = DatagramChannel.open();
-        InetSocketAddress address = new InetSocketAddress("localhost", 1235);
-        channel.bind(address);
-        ByteBuffer buf = ByteBuffer.allocate(1024);
+        PersonCollection personCollection = new PersonCollection();
+        FileWorker fileWorker = new FileWorker();
+        String path = "MICHELLE";
+        try {
+            fileWorker.setPath(path);
+        }catch(NullPointerException e){
+            System.out.println(e.getMessage());
+        }
+        if(!personCollection.deserializeCollection(fileWorker.read())){
+            System.out.println("В файле ошибка");
+            personCollection.clear();
+        }
+        CommandExecutorServer command = new CommandExecutorServer(fileWorker, personCollection);
+        command.serverMode();
 
-        channel.receive(buf);
-
-        ByteArrayInputStream readbuf = new ByteArrayInputStream(buf.array());
-        ObjectInputStream readOb = new ObjectInputStream(readbuf);
-        History hist = (History)readOb.readObject();
-        hist.printHistory();
     }
 
 }

@@ -2,8 +2,17 @@ package commands;
 
 public class HelpCommand extends Command{
     protected String nameOfCommand = "help";
+
+    public HelpCommand(){
+        super("help");
+    }
+
+    public String getNameOfCommand(){
+        return nameOfCommand;
+    }
+
     @Override
-    public void execute() {
+    public void getResult() {
         System.out.println(
                 "help : вывести справку по доступным командам\n"+
                         "info : вывести в стандартный поток вывода информацию о коллекции (тип, дата инициализации, количество элементов и т.д.)\n"+
@@ -21,6 +30,5 @@ public class HelpCommand extends Command{
                         "min_by_weight : вывести любой объект из коллекции, значение поля weight которого является минимальным\n"+
                         "group_counting_by_nationality : сгруппировать элементы коллекции по значению поля nationality, вывести количество элементов в каждой группе\n"+
                         "count_by_hair_color hairColor : вывести количество элементов, значение поля hairColor которых равно заданному");
-        history.addCommand("help");
     }
 }
